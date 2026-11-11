@@ -1,3 +1,28 @@
+# Valhalla Combat (tonycubed2 fixes)
+
+A modified build of [Valhalla Combat](https://www.nexusmods.com/skyrimspecialedition/mods/64741) by **dTry (D7ry)**
+([source](https://github.com/D7ry/valhallaCombat), BSD 3-Clause, see `LICENSE`). All credit for Valhalla Combat goes
+to dTry. The history up to commit 48fb4c3 is his; the commit after it holds these fixes. Not an official release.
+
+Fixes (details in the source comments):
+* Builds with CommonLibSSE-NG 16.2.0 for SE 1.5.97, AE 1.6.1170, 1.7.99 and 1.7.104 (API updates; C++23).
+  CommonLibSSE-NG 6.7.0 declared one virtual too many in `TESObjectREFR`, so through it `IsInCombat()` ran
+  `Actor::UpdateCombat`, `AddPerk` removed the perk, `RemovePerk` and `CalcUnarmedDamage` ran other functions and
+  `GetWorldspace` could set a reference's parent cell. Built with 16.2.0 all of them land on the right slot
+  (checked against the Character vtable of SkyrimSE.exe 1.5.97 and 1.6.1170 and the built DLL).
+* Attack stamina hook: null checks, and the ActorValueOwner -> Actor conversion uses the game's RTTI.
+* `AttackBlockHandler::ProcessButton` is vtable slot 0x6 on 1.7.99+ (0x4 before): timed / perfect block works there.
+* The `OnGetWantBlock` hook has no AE address: skipped on AE instead of writing to an invalid address.
+* Settings are read from `Data\MCM\Settings\ValhallaCombat.ini`, the file MCM Helper actually writes.
+* The MCM's "TrueHUD API found / special meter granted" status globals are set.
+* Alt Block Key and automatic block detection no longer cancel each other's timed-block window.
+* "Is dead" checks read the life state; `[BlockDiag]` lines in the log trace block detection.
+* No post-build copy into the game folder; the DLL stays in `build/src/Release`.
+
+---
+
+Original README by dTry:
+
 # Valhalla Combat
   Valhalla Combat is an integrated and script-free combat overhaul designed with modern principles in mind. Heavily inspired by modern action games such as AC:Valhalla, God of War, and Elden Ring, Valhalla Combat will fundamentally change the feeling of Skrim's combat both in 1st and 3rd person, rendering a enjoyable and consistent experience.
 # **Features**

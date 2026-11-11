@@ -40,6 +40,11 @@ namespace std
 
 #define DLLEXPORT __declspec(dllexport)
 
+// CommonLibSSE-NG 16 no longer defines SKSEAPI (6.x had it in SKSE/API.h as __cdecl)
+#ifndef SKSEAPI
+#	define SKSEAPI __cdecl
+#endif
+
 #define RELOCATION_OFFSET(SE, AE) REL::VariantOffset(SE, AE, 0).offset()
 
 #include "Plugin.h"
